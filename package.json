@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/ekkis/js-prototype-lib#readme",
   "devDependencies": {
-    "mocha": "^6.1.4"
+    "mocha": "^10.1.0"
   }
 }
