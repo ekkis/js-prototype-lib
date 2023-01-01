@@ -355,4 +355,13 @@ describe('Objects', () => {
 			assert.equal(o.json(true), '{"a":1}')
 		})
 	})
+	describe('tee', () => {
+		it('Base case', () => {
+			var fn = '/tmp/tee.json'
+			fn.rm()
+			var o  = {a: 1, b: 2}
+			o.tee(fn)
+			assert.equal(fn.cat(), '{"a":1,"b":2}')
+		})
+	})
 })

@@ -159,3 +159,15 @@ this module creates the methods as non-enumerable, which will be perfectly safe
    safely handle objects with circular references that normally cannot be serialised and
    issue an exception.  Circularity is managed by removing the offending keys.  Unsafe calls
    are made by default to avoid the burden of additional processing
+
+   ### tee path
+
+   Save an object to a file as Json e.g.
+   ```js
+   var o = {a:1, b:2}
+   o.tee('/tmp/o.json')
+   ```
+   though please note that object literals cannot invoke the method:
+   ```js
+   {a:1, b:2}.tee('/tmp/o.json') // won't compile
+   ```
