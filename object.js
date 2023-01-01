@@ -105,7 +105,7 @@ module.exports = {
         return safe ? safeJSON(this) : JSON.stringify(this);
     },
     tee(path) {
-        JSON.stringify(this).tee(path)
+        JSON.stringify(this).tee(path, {clobber: true})
     }
 }
 
