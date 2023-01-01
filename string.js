@@ -210,7 +210,9 @@ var self = module.exports = {
         self.fs.renameSync(this.resolve(), dst);
     },
     rm() {
-        self.fs.unlinkSync(this.resolve());
+        var fn = this.resolve()
+        if (self.fs.existsSync(fn))
+            self.fs.unlinkSync(fn);
     },
     chmod(mode) {
         return self.fs.chmodSync(this.resolve(), mode);

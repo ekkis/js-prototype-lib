@@ -550,6 +550,11 @@ describe('Strings', () => {
 			path.rm();
 			assert.ok(!fs.existsSync(path))
 		})
+		it('removes non-existent file', () => {
+			var path = d + '/f5.txt'
+			assert.ok(!fs.existsSync(path))
+			path.rm();
+		})
 		it('reads properties', () => {
 			var path = d + '/f1.txt'
 			var st = path.fstat()

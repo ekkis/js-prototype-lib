@@ -288,3 +288,5 @@
   '~/t.txt'.mv('/tmp')    // would move t.txt in your home directory to the /tmp
   '~/.bashrc'.cp('/tmp')  // copies your bash resource file to the temporary directory
   ```
+
+  save for `rm()` which will issue no exception when the path does not exist
