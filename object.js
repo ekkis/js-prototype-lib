@@ -95,10 +95,10 @@ module.exports = {
         return p.o[p.k]; 
     },
     setpath(path, v, init = false) {
-        var p = mkpath(this, path);
-        if (!init || !(p.k in p.o)) p.o[p.k] = v;
-        // p.o[p.k] = v;
-        return p.o;
+        var {k, o} = mkpath(this, path);
+        if (!init || !(k in o)) o[k] = v;
+        // o[k] = v;
+        return o
     },
     json(safe = false) {
         if (this instanceof Error) return JSON.stringify(this.obj());
@@ -110,10 +110,11 @@ module.exports = {
 }
 
 function mkpath(o, path) {
-    path = path.replace(/\./g, '/').split('/');
-    var k = path.pop();
+    if (typeof(path) == 'string')
+        path = path.replace(/\./g, '/').split('/')
+    var k = path.pop()
     path.forEach(k => { if (!o[k]) o[k] = {}; o = o[k]; })
-    return {k, o};
+    return {k, o}
 }
 
 // https://stackoverflow.com/questions/11616630/json-stringify-avoid-typeerror-converting-circular-structure-to-json

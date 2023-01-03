@@ -331,6 +331,12 @@ describe('Objects', () => {
 			actual.setpath('a', 2, true);
 			assert.deepEqual(actual, {a:1})
 		})
+		it('Path as array', () => {
+			var actual = {a: {b: {c: 0}}};
+			actual.setpath(['a','b','c'], 1)
+			var expected = {a: {b: {c: 1}}}
+			assert.deepEqual(actual, expected)
+		})
 	})
 	describe('json', () => {
 		it('Base case', () => {
