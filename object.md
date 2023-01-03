@@ -3,28 +3,35 @@
 Object prototypes are typically problematic for packages that are badly written (packages that do 
 `for (var i in o)` without calling `.hasOwnProperty()`), and there are many of those, therefore 
 this module creates the methods as non-enumerable, which will be perfectly safe
+
+<hr>
+
 #### `.isEmpty()`
 
 Returns a boolean value indicating whether the object contains any visible members (this excludes
 functions and other attributes created with `enumerable: false`)
 
+<hr>
+
 #### `.keys()`
 
 Equivalent to `Object.keys()`
 
-#### `.vals()`
-#### `.vals(callback-function)`
+<hr>
+
+#### `.vals()` / `.vals(fn)`
 
 This function has two modes, the first returns an array of the values within the object,
-whilst the second executes a callback on each of the values.  The callback receives
+whilst the second executes a function on each of the values.  The function receives
 a sole argument consisting of the value e.g.
 ```js
 {a:1, b:2}.vals()                     // returns [1,2]
 {a:1}.vals(v => { console.log(v) })   // prints 1
 ```
 
-#### `.slice(keys)`
-#### `.slice([keys])`
+<hr>
+
+#### `.slice(keys)` / `.slice([keys])`
 
 Returns a new object containing only the properties specified in the base object.  The key list may
 be provided as an array or a string-array
@@ -33,25 +40,29 @@ be provided as an array or a string-array
 {a:1, b:1, c:1}.slice('a/c')          // returns {a:1, c:1}
 ```
 
-#### `.uc()` / `.lc()`
-#### `.uc(keys)` / `.lc(keys)`
-#### `.uc([keys])` / `.lc([keys])`
+<hr>
+
+#### `.uc()` / `.lc()` / `.uc(keys)` / `.lc(keys)` / `.uc([keys])` / `.lc([keys])`
 
 Uppercases or lowercases the values in an object.  If no arguments are passed, all keys in the
 object are operated upon.  Alternatively the caller may pass an array of keys or a string to be
 converted into an array using the `String.arr()` method
 
+<hr>
+
 #### `.map(fn)`
 
 Returns an object transformed according to the function passed
+
+<hr>
 
 #### `.each(fn)`
 
 Iterates through the properties of an object, performing a caller-defined function
 
-#### `.concat(o...)`
-#### `.assign(o...)`
-#### `.def(o...)`
+<hr>
+
+#### `.concat(o...)` / `.assign(o...)` / `.def(o...)`
 
 These functions behave similarly.  They merge the elements in the parameter list with
 those of the referenced object.  They differ in that `assign` modifies the reference
@@ -77,8 +88,9 @@ console.log(o.def({a:2}))             // {a:1}
 console.log(o.def({b:1}))             // {a:1, b:1}
 ```
 
-#### `.mv(descriptor)`
-#### `.mvp(descriptor)`
+<hr>
+
+#### `.mv(descriptor)` / `.mvp(descriptor)`
 
 These methods move (rename) keys in the object by providing a descriptor map.  The keys
 in the map indicate which keys in the object will be affected, and the values of the map,
@@ -102,8 +114,9 @@ o.mv({a: 'c'})
 console.log(o)  // produces {c:1, b:2}
 ```
 
-#### `.rm(list)`
-#### `.rmp(list)`
+<hr>
+
+#### `.rm(list)` / `.rmp(list)`
 
 Like mv/p, this method comes in destructive and non-destructive modes.  The method
 accepts a list or array of keys to remove from the object e.g. `{a:1, b:2, c:3}.rm('a', 'b')`
@@ -112,8 +125,9 @@ accepts a string-array: `{a:1, b:2, c:3}.rm('a/b')`
 
 Please note that to pass an array, spread notation is needed
 
-#### `.keyval(names = ['k', 'v'])`
-#### `.keyval(ks = '=', rs = '\n')`
+<hr>
+
+#### `.keyval(names = ['k', 'v'])` / `.keyval(ks = '=', rs = '\n')`
 
 Converts an object into key/value pairs returned as either a string or an array,
 depending on the type of the argument passed
@@ -127,14 +141,16 @@ separator strings such that `{a:1,b:1}.keyval('=', ';')` returns `'a=1;b=1'`
 
 Cf. `[].keyval()`
 
-### notIn o
+<hr>
+
+#### `.notIn(o)`
 
 Returns the set of keys in the object that are not found in `o`.  Use it like this:
 `{a:1, b:1, c:1}.notIn({a:2,b:2}) // returns ['c']`
 
-#### `.getpath(path)`
-#### `.setpath(path, value, init = false)`
-#### `.init(path, value)`
+<hr>
+
+#### `.getpath(path)` / `.setpath(path, value, init = false)` / `.init(path, value)`
 
 This function pair gets and sets deeply embedded values in an object.  Paths can be 
 specified in dots or slashes, or as arrays.  *getpath* returns *undefined* when a path does not exist.
@@ -159,13 +175,16 @@ o.setpath('a', 2, true)  // sets o.a to 2
 o.setpath('a', 3, true)  // respects the value already there
 ```
 
-#### `.json()`
-#### `.json(safe)`
+<hr>
+
+#### `.json()` / `.json(safe)`
 
 Converts the object to a Json string.  If the `safe` switch is used, the method will
 safely handle objects with circular references that normally cannot be serialised and
 issue an exception.  Circularity is managed by removing the offending keys.  Unsafe calls
 are made by default to avoid the burden of additional processing
+
+<hr>
 
 #### `.tee(path)`
 
