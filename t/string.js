@@ -240,6 +240,10 @@ describe('Strings', () => {
 			assert.deepEqual('ett\ttvå\ttre'.arr(), expected, 'Tabs failed')
 			assert.deepEqual('ett\ntvå\ntre'.arr(), expected, 'Newlines failed')
 		})
+		it('array - alias', () => {
+			var expected = ['ett', 'två', 'tre']
+			assert.deepEqual('ett|två|tre'.r(), expected, 'Pipes failed')
+		})
 		it('array - custom delimiter', () => {
 			var expected = ['ett', 'två', 'tre']
 			assert.deepEqual('ett två tre'.arr(' '), expected)

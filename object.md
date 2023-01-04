@@ -42,9 +42,9 @@ be provided as an array or a string-array
 
 <hr>
 
-#### `.uc()` / `.lc()` / `.uc(keys)` / `.lc(keys)` / `.uc([keys])` / `.lc([keys])`
+#### `.uc/lc/tc(keys | [keys])`
 
-Uppercases or lowercases the values in an object.  If no arguments are passed, all keys in the
+Uppercases, lowercases or titlecases the values in an object.  If no arguments are passed, all keys in the
 object are operated upon.  Alternatively the caller may pass an array of keys or a string to be
 converted into an array using the `String.arr()` method
 

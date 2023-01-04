@@ -74,7 +74,10 @@ var self = module.exports = {
         if (typeof dc == 'function') { cb = dc; dc = '' }
         var ret = this.split(charSet(dc));
         if (!cb) return ret;
-        ret.forEach(v => cb(v));
+        ret.forEach(v => cb(v))
+    },
+    r(dc, cb) {
+        return this.arr(dc, cb)
     },
     splitn(dc, n = 2) {
         if (Number.isInteger(dc)) { n = dc; dc = ''}

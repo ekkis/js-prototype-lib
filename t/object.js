@@ -50,6 +50,24 @@ describe('Objects', () => {
 			actual.lc('a/c')
 			assert.deepEqual(actual, expected)
 		})
+		it('titlecases', () => {
+			var actual = {a: 'one two', b: 'two three'}
+			var expected = {a: 'One Two', b: 'Two Three'}
+			actual.tc()
+			assert.deepEqual(actual, expected)
+		})
+		it('titlecases - limited, array', () => {
+			var actual = {a: 'one', b: 'two', c: 'three'}
+			var expected = {a: 'One', b: 'two', c: 'Three'}
+			actual.tc(['a', 'c'])
+			assert.deepEqual(actual, expected)
+		})
+		it('titlecases - limited, string', () => {
+			var actual = {a: 'one', b: 'two', c: 'three'}
+			var expected = {a: 'One', b: 'two', c: 'Three'}
+			actual.tc('a/c')
+			assert.deepEqual(actual, expected)
+		})
 	})
 	describe('keys', () => {
 		it('Base case', () => {
