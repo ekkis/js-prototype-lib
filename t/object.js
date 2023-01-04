@@ -344,16 +344,22 @@ describe('Objects', () => {
 			var expected = {a: {b: {c: 3}}}
 			assert.deepEqual(actual, expected)
 		})
-		it('Initialisation', () => {
-			var actual = {a: 1}
-			actual.setpath('a', 2, true);
-			assert.deepEqual(actual, {a:1})
-		})
 		it('Path as array', () => {
 			var actual = {a: {b: {c: 0}}};
 			actual.setpath(['a','b','c'], 1)
 			var expected = {a: {b: {c: 1}}}
 			assert.deepEqual(actual, expected)
+		})
+		it('Initialisation', () => {
+			var actual = {a: 1}
+			actual.setpath('a', 2, true);
+			assert.deepEqual(actual, {a:1})
+		})
+		it('Proper return value', () => {
+			var r = {a: {b: []}}
+			var res = r.setpath('a/b', [])
+			assert.deepEqual(r, {a: {b: []}}, 'Bad setting')
+			assert.deepEqual(res, [], 'Bad return value')
 		})
 	})
 	describe('json', () => {

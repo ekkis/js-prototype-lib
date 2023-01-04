@@ -150,12 +150,12 @@ Returns the set of keys in the object that are not found in `o`.  Use it like th
 
 <hr>
 
-#### `.getpath(path)` / `.setpath(path, value, init = false)` / `.init(path, value)`
+#### `.getpath(path)` / `.setpath(path, value, noclobber = false)`
 
 This function pair gets and sets deeply embedded values in an object.  Paths can be 
 specified in dots or slashes, or as arrays.  *getpath* returns *undefined* when a path does not exist.
-*setpath* will create the path when it doesn't exist, unless the *init* parameter is set
-to true
+*setpath* will create the path when it doesn't exist, unless the *noclobber* parameter is set
+to true and returns the object created
 ```js
 var o = {}
 o.setpath('a/b/c', 1)
@@ -169,10 +169,16 @@ var o = {}
 o.setpath('a.b.c', 1)
 console.log(o.getpath('a.b.c')) // outputs 1
 
-// one-time initialisation
+// one-time initialisation (noclobber)
 var o = {}
 o.setpath('a', 2, true)  // sets o.a to 2
 o.setpath('a', 3, true)  // respects the value already there
+
+// using the return value
+var o = {}
+var r = o.setpath('a/b', [])
+r.push(0)
+console.log(o) // shows {a: {b: [0]}}
 ```
 
 <hr>

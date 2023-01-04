@@ -99,14 +99,13 @@ module.exports = {
         return this.keys().filter(k => ok.indexOf(k) == -1)
     },
     getpath(path) {
-        var p = mkpath(this, path)
-        return p.o[p.k] 
-    },
-    setpath(path, v, init = false) {
         var {k, o} = mkpath(this, path)
-        if (!init || !(k in o)) o[k] = v
-        // o[k] = v
-        return o
+        return o[k] 
+    },
+    setpath(path, v, noclobber = false) {
+        var {k, o} = mkpath(this, path)
+        if (!noclobber || !(k in o)) o[k] = v
+        return o[k]
     },
     json(safe = false) {
         if (this instanceof Error) return JSON.stringify(this.obj())
