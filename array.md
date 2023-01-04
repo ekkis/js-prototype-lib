@@ -87,10 +87,15 @@ an example: `['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].split(3)` results in:
 
 <hr>
 
-#### `.dict(nms: string | array)`
+#### `.dict(keys: string | array)`
 
-Converts an array into a dictionary using the array of names given as keys.  The array may be passed as a string-array allowing simple expression like this:
+Converts an array into a dictionary using the given list of keys.  The list may be passed as a string-array allowing simple expression like this:
 ```js
 var r = [1,2,3]
 console.log(r.dict('a/b/c')) // produces {a:1,b:2,c:3}
+```
+Also, when there are more element in the array than keys, the additional values may be captured up by specifying a splat as the final key:
+```js
+var r = [1,2,3,4,5]
+console.log(r.dict('a/b/c/*')) // produces {a:1,b:2,c:3,'4':4,'5':5}
 ```

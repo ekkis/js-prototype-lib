@@ -280,6 +280,12 @@ describe('Arrays', () => {
 		it('More values than keys', () => {
 			var nms = 'a/b/c'.arr()
 			var r = [1,2,3,4,5]
+			var expected  = {a:1,b:2,c:3}
+			assert.deepEqual(r.dict(nms), expected)
+		})
+		it('More values than keys (extended)', () => {
+			var nms = 'a/b/c/*'.arr()
+			var r = [1,2,3,4,5]
 			var expected  = {a:1,b:2,c:3,'4':4,'5':5}
 			assert.deepEqual(r.dict(nms), expected)
 		})

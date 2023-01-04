@@ -73,7 +73,11 @@ module.exports = {
         var i = 0
         if (nms.isStr) nms = nms.arr()
         var fn = (o, v) => (o[nms[i++] || i] = v, o)
-        return this.reduce(fn, {})
+        var n = nms.length
+        if (nms[n-1] == '*') {
+            n = this.length; nms.pop()
+        }
+        return this.slice(0, n).reduce(fn, {})
     }
 }
 
