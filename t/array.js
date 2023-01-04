@@ -264,4 +264,30 @@ describe('Arrays', () => {
 			assert.deepEqual(r.split(4), expected)
 		})
 	})
+	describe('dict', () => {
+		it('Base case', () => {
+			var nms = 'a/b/c'.arr()
+			var r = [1,2,3]
+			var expected  = {a:1,b:2,c:3}
+			assert.deepEqual(r.dict(nms), expected)
+		})
+		it('More keys than values', () => {
+			var nms = 'a/b/c/d'.arr()
+			var r = [1,2,3]
+			var expected  = {a:1,b:2,c:3}
+			assert.deepEqual(r.dict(nms), expected)
+		})
+		it('More values than keys', () => {
+			var nms = 'a/b/c'.arr()
+			var r = [1,2,3,4,5]
+			var expected  = {a:1,b:2,c:3,'4':4,'5':5}
+			assert.deepEqual(r.dict(nms), expected)
+		})
+		it('Accepts string arrays', () => {
+			var nms = 'a/b/c'
+			var r = [1,2,3]
+			var expected  = {a:1,b:2,c:3}
+			assert.deepEqual(r.dict(nms), expected)
+		})
+	})
 })

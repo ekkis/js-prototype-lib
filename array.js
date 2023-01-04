@@ -68,6 +68,12 @@ module.exports = {
             ret[j].push(this[i]);
         }
         return ret;
+    },
+    dict(nms) {
+        var i = 0
+        if (nms.isStr) nms = nms.arr()
+        var fn = (o, v) => (o[nms[i++] || i] = v, o)
+        return this.reduce(fn, {})
     }
 }
 

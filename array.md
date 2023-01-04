@@ -84,3 +84,13 @@ the method works only for scalar values, not objects
 Breaks up an array into an array of arrays containing no more than `max` elements each.  As
 an example: `['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].split(3)` results in:
 `[['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h']]`
+
+<hr>
+
+#### `.dict(nms: string | array)`
+
+Converts an array into a dictionary using the array of names given as keys.  The array may be passed as a string-array allowing simple expression like this:
+```js
+var r = [1,2,3]
+console.log(r.dict('a/b/c')) // produces {a:1,b:2,c:3}
+```
