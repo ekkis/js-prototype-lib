@@ -6,16 +6,19 @@ module.exports = {
         if (keys.isStr) keys = keys.arr()
         if (keys.length == 0) keys = this.keys()
         keys.forEach(k => this[k] = this[k].uc())
+        return this
     },
     lc(keys = []) {
         if (keys.isStr) keys = keys.arr()
         if (keys.length == 0) keys = this.keys()
         keys.forEach(k => this[k] = this[k].lc())
+        return this
     },
     tc(keys = []) {
         if (keys.isStr) keys = keys.arr()
         if (keys.length == 0) keys = this.keys()
         keys.forEach(k => this[k] = this[k].tc())
+        return this
     },
     keys() {
         return Object.keys(this)
