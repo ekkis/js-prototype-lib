@@ -1,79 +1,79 @@
-var os = require('os');
-var jspath = require('path');
+var os = require('os')
+var jspath = require('path')
 var flat = require('./array').flat
 
 var self = module.exports = {
     fs: require('fs'),
     uc() { 
-        return this.toUpperCase(); 
+        return this.toUpperCase() 
     },
     lc() { 
-        return this.toLowerCase(); 
+        return this.toLowerCase() 
     },
     tc() {
         return this.toLowerCase().split(/\b/)
             .map(s => s.length > 1 ? (s.charAt(0).toUpperCase() + s.substr(1)) : s)
-            .join('');
+            .join('')
     },
     tr(scs, rcs) {
-        var ret = '';
+        var ret = ''
         for (var i = 0; i < this.length; i++) {
-            var j = scs.indexOf(this[i]);
-            ret +=  j > -1 ? rcs[j] : this[i];
+            var j = scs.indexOf(this[i])
+            ret +=  j > -1 ? rcs[j] : this[i]
         }
-        return ret;
+        return ret
     },
     sprintf(o) {
-        var s = this.toString();
-        if (typeof o != 'object') return s;
+        var s = this.toString()
+        if (typeof o != 'object') return s
         if (Array.isArray(o)) {
             for (let i = 0; i < o.length; i++) {
                 if (typeof o[i] != 'object')
-                    s = s.replace('%s', o[i]);
+                    s = s.replace('%s', o[i])
             }
-            return s;
+            return s
         }
         for (var k in o)
-            s = s.replace(new RegExp('%{' + k + '}', 'g'), o[k]);
-        return s;
+            s = s.replace(new RegExp('%{' + k + '}', 'g'), o[k])
+        return s
     },
     replaceall(sstr, rstr) {
-        return this.split(sstr).join(rstr);
+        return this.split(sstr).join(rstr)
     },
     chomp(re = '\n') {
-        if (re instanceof RegExp) re = re.toString().replace(/\//g, '');
+        if (re instanceof RegExp) re = re.toString().replace(/\//g, '')
         else re = re.replaceall('.', '\\.')
-        return this.replace(new RegExp(re + '$'), '');
+        return this.replace(new RegExp(re + '$'), '')
     },
     unindent() {
-        var level = this.match(/^\n?([ \t]*)/);
-        var re = new RegExp('^' + level[1], 'gm');
-        return this.trim().replace(re, '');
+        var level = this.match(/^\n?([ \t]*)/)
+        var re = new RegExp('^' + level[1], 'gm')
+        return this.trim().replace(re, '')
     },
     heredoc() {
         return this.unindent()
-            .replace(/([^\n])\n/g, '$1 ');
+            .replace(/([^\n])\n/g, '$1 ')
     },
     keyval(ks = "=", rs = "\n", qa = false) {
-        var ret = {};
+        var ret = {}
         this.split(rs).forEach(s => {
-            if (!s) return;
-            var [k, v] = s.split(ks);
-            ret[k] = v.match(/^\d+(?:\.\d+)?$/) && !qa ? parseFloat(v) : v;
-        });
-        return ret;
+            if (!s) return
+            var [k, v] = s.split(ks)
+            ret[k] = v.match(/^\d+(?:\.\d+)?$/) && !qa ? parseFloat(v) : v
+        })
+        return ret
     },
     q(v = "'") {
-        if (!v) v = '"';
-        var [qb, qe] = v.split('');
-        if (!qe) qe = qb;
-        var re = new RegExp("^[X]|[X]$".replace(/X/g, v), "g");
-        return qb + this.replace(re, '') + qe;
+        if (!v) v = '"'
+        var [qb, qe] = v.split('')
+        if (!qe) qe = qb
+        var re = new RegExp("^[X]|[X]$".replace(/X/g, v), "g")
+        return qb + this.replace(re, '') + qe
     },
     arr(dc, cb) {
         if (typeof dc == 'function') { cb = dc; dc = '' }
-        var ret = this.split(charSet(dc));
-        if (!cb) return ret;
+        var ret = this.split(charSet(dc))
+        if (!cb) return ret
         ret.forEach(v => cb(v))
     },
     r(dc, cb) {
@@ -81,31 +81,31 @@ var self = module.exports = {
     },
     splitn(dc, n = 2) {
         if (Number.isInteger(dc)) { n = dc; dc = ''}
-        if (n < 2) return [this.toString()];
-        if (!dc) dc = '/|,;.\t\n';
+        if (n < 2) return [this.toString()]
+        if (!dc) dc = '/|,.\t\n'
         
-        var ret = [], s = this.toString();
+        var ret = [], s = this.toString()
         for (var i = 0; i < n - 1; i++) {
-            let m = s.match(charSet(dc));
-            if (!m) break;
-            ret[i] = s.substr(0, m.index);
-            s = s.substr(m.index + m[0].length);
+            let m = s.match(charSet(dc))
+            if (!m) break
+            ret[i] = s.substr(0, m.index)
+            s = s.substr(m.index + m[0].length)
         }
-        ret[i] = s;
-        return ret;
+        ret[i] = s
+        return ret
     },
     nth(n, dc) {
-        var r = this.arr(dc);
-        if (n < 0) n = r.length + n;
-        return r[n] || '';
+        var r = this.arr(dc)
+        if (n < 0) n = r.length + n
+        return r[n] || ''
     },
     extract(re, empty = false) {
-        var m, ret = [];
+        var m, ret = []
         if (isRegExpGlobal(re))
-            while (m = re.exec(this)) ret = ret.concat(m.slice(1));
+            while (m = re.exec(this)) ret = ret.concat(m.slice(1))
         else {
-            m = this.match(re);
-            if (m) ret = m.slice(1);
+            m = this.match(re)
+            if (m) ret = m.slice(1)
         }
         return ret.length == 0
             ? (empty == true 
@@ -114,166 +114,166 @@ var self = module.exports = {
             )
             : ret.length == 1 
             ? ret[0] 
-            : ret;
+            : ret
     },
     json() {
-        var s = this.trim();
-        return s ? JSON.parse(s) : {};
+        var s = this.trim()
+        return s ? JSON.parse(s) : {}
     },
     path(segment = 'filename') {
         if (segment == 'filename')
-            return this.replace(/^.*\//, '');
+            return this.replace(/^.*\//, '')
         if (segment == 'basename')
-            return this.replace(/^.*\//, '').replace(/\.\w+$/, '');
+            return this.replace(/^.*\//, '').replace(/\.\w+$/, '')
         if (segment == 'dir' && this.indexOf('/') > -1)
-            return this.replace(/\/[^/]*$/, '');
+            return this.replace(/\/[^/]*$/, '')
     },
     resolve() {
-        var s = this.toString().replace(/^~/, os.homedir());
-        return jspath.resolve(s);
+        var s = this.toString().replace(/^~/, os.homedir())
+        return jspath.resolve(s)
     },
     mkdir(opts) {
-        // var path = this.toString();
-        // self.fs.mkdirSync(path, Object.assign(opts, {recursive: true}));
-        var path = this.toString().resolve().split('/');
+        // var path = this.toString()
+        // self.fs.mkdirSync(path, Object.assign(opts, {recursive: true}))
+        var path = this.toString().resolve().split('/')
         for (var i = 2; i <= path.length; i++) {
-            var d = path.slice(0, i).join('/');
+            var d = path.slice(0, i).join('/')
             if (!self.fs.existsSync(d))
-                self.fs.mkdirSync(d, opts);
+                self.fs.mkdirSync(d, opts)
         }
     },
     rmdir(opts = {}) {
-        var path = this.resolve();
-        if (typeof opts == 'boolean') opts = {recurse: opts};
+        var path = this.resolve()
+        if (typeof opts == 'boolean') opts = {recurse: opts}
         if (opts.recurse) path.ls({recurse: true, withFileTypes: true, fullpath: true})
             .sort((a,b) => a.name.length < b.name.length ? 1 : -1)
             .forEach(o => {
-                if (o.isDirectory()) self.fs.rmdirSync(o.name);
-                else self.fs.unlinkSync(o.name);
+                if (o.isDirectory()) self.fs.rmdirSync(o.name)
+                else self.fs.unlinkSync(o.name)
             })
-        self.fs.rmdirSync(path);
+        self.fs.rmdirSync(path)
     },
     ls(filter, opts = {}) {
-        var path = this.resolve();
+        var path = this.resolve()
         if (isObj(filter)) {
-            opts = filter; filter = opts.filter;
+            opts = filter; filter = opts.filter
         }
-        if (!filter) filter = [];
-        if (!Array.isArray(filter)) filter = [filter];
-        if (opts.hidden === false) filter.push(/^[^.]/);
+        if (!filter) filter = []
+        if (!Array.isArray(filter)) filter = [filter]
+        if (opts.hidden === false) filter.push(/^[^.]/)
 
-        var ret;
-        if (!opts.recurse) ret = ls(path, opts);
+        var ret
+        if (!opts.recurse) ret = ls(path, opts)
         else {
-            ret = lsr(path, opts);
-            if (!opts.withFileTypes) ret = ret.map(o => o.name);
+            ret = lsr(path, opts)
+            if (!opts.withFileTypes) ret = ret.map(o => o.name)
         }
         if (!opts.fullpath) {
-            ret = ret.map(o => chomp(o));
+            ret = ret.map(o => chomp(o))
         }
         if (filter.length > 0) filter.forEach(filter => {
             ret = ret.filter(
                 nm => (typeof nm == 'object' ? nm.name : nm).match(filter)
-            );
-        });
-        return ret;
+            )
+        })
+        return ret
 
         function chomp(o) {
             if (typeof o == 'string')
-                return o.replace(path + '/', '');
-            o.name = o.name.replace(path + '/', '');
-            return o;
+                return o.replace(path + '/', '')
+            o.name = o.name.replace(path + '/', '')
+            return o
         }
     },
     cat(opts = 'utf8') {
-        if (typeof opts == 'string') opts = {encoding: opts};
+        if (typeof opts == 'string') opts = {encoding: opts}
         if (opts.encoding == 'base64') {
-            var buf = self.fs.readFileSync(this.resolve());
-            return new Buffer.from(buf).toString('base64');
+            var buf = self.fs.readFileSync(this.resolve())
+            return new Buffer.from(buf).toString('base64')
         }
-        return self.fs.readFileSync(this.resolve(), opts);
+        return self.fs.readFileSync(this.resolve(), opts)
     },
     tee(s, opts = {}) {
-        var {argIsPath} = opts;
-        if (s instanceof Buffer) argIsPath = false;
-        else if (typeof argIsPath == 'undefined') argIsPath = s.indexOf('/') > -1;
+        var {argIsPath} = opts
+        if (s instanceof Buffer) argIsPath = false
+        else if (typeof argIsPath == 'undefined') argIsPath = s.indexOf('/') > -1
 
-        var [path, data] = swap(!argIsPath, s, this.toString());
-        path = path.resolve();
-        if (!opts.nomkdir) path.path('dir').mkdir();
+        var [path, data] = swap(!argIsPath, s, this.toString())
+        path = path.resolve()
+        if (!opts.nomkdir) path.path('dir').mkdir()
         if (opts.clobber)
-            self.fs.writeFileSync(path, data, opts);
+            self.fs.writeFileSync(path, data, opts)
         else
-            self.fs.appendFileSync(path, data, opts);
+            self.fs.appendFileSync(path, data, opts)
     },
     cp(dst, flags) {
-        self.fs.copyFileSync(this.resolve(), dst, flags);
+        self.fs.copyFileSync(this.resolve(), dst, flags)
     },
     mv(dst) {
-        self.fs.renameSync(this.resolve(), dst);
+        self.fs.renameSync(this.resolve(), dst)
     },
     rm() {
         var fn = this.resolve()
         if (self.fs.existsSync(fn))
-            self.fs.unlinkSync(fn);
+            self.fs.unlinkSync(fn)
     },
     chmod(mode) {
-        return self.fs.chmodSync(this.resolve(), mode);
+        return self.fs.chmodSync(this.resolve(), mode)
     },
     chown(uid, gid) {
-        self.fs.chownSync(this.resolve(), uid, gid);
+        self.fs.chownSync(this.resolve(), uid, gid)
     },
     fex() {
-        return self.fs.existsSync(this.resolve());
+        return self.fs.existsSync(this.resolve())
     },
     isdir() {
-        return self.fs.lstatSync(this.toString()).isDirectory();
+        return self.fs.lstatSync(this.toString()).isDirectory()
     },
     fstat(opts = {}) {
         var path = this.resolve()
-        var fn = opts.symlinks ? 'lstat' : 'stat'; 
-        return self.fs[fn + 'Sync'](path, opts);
+        var fn = opts.symlinks ? 'lstat' : 'stat' 
+        return self.fs[fn + 'Sync'](path, opts)
     },
     symlink(target, type) {
-        var path = this.resolve();
-        self.fs.symlinkSync(target, path, type);
+        var path = this.resolve()
+        self.fs.symlinkSync(target, path, type)
     }
 }
 
 function isRegExpGlobal(re) {
-    var mods = re.toString().split('/')[2];
-    return mods.indexOf('g') > -1;
+    var mods = re.toString().split('/')[2]
+    return mods.indexOf('g') > -1
 }
 
 function charSet(dc) {
-    if (!dc) dc = '/|,;. \t\n';
-    return new RegExp('[' + dc + ']+');
+    if (!dc) dc = '/|,;. \t\n'
+    return new RegExp('[' + dc + ']+')
 }
 
 function swap(cond, a, b) {
-    return cond ? [b, a] : [a, b];
+    return cond ? [b, a] : [a, b]
 }
 
 function ls(path, opts = {}) {
-    var ret = self.fs.readdirSync(path, opts);
-    if (!opts.withFileTypes) return ret.map(fn => path + '/' + fn);
+    var ret = self.fs.readdirSync(path, opts)
+    if (!opts.withFileTypes) return ret.map(fn => path + '/' + fn)
 
     // node v8 does not support withFileTypes so we must emulate it
     if (typeof ret[0] == 'string') {
         ret = ret.map(fn => {
             var ret = self.fs.lstatSync(path + '/' + fn)
-            if (!ret.name) ret.name = fn;   // node v8 doesn't return the name
-            return ret;
+            if (!ret.name) ret.name = fn   // node v8 doesn't return the name
+            return ret
         })
     }
     if (opts.followSymlinks) {
         ret = ret.map(o => {
-            var ret = self.fs.statSync(path + '/' + o.name);
-            ret.name = o.name;
-            return ret;
+            var ret = self.fs.statSync(path + '/' + o.name)
+            ret.name = o.name
+            return ret
         })
     }
-    return ret;
+    return ret
 }
 
 function lsr(path, opts) {
@@ -281,19 +281,19 @@ function lsr(path, opts) {
     try {
         var ret = ls(path, Object.assign({withFileTypes: true}, opts))
             .map(o => {
-                o.name = path + o.name;
+                o.name = path + o.name
                 var ret = [o]
                 if (o.isDirectory()) 
                     ret = ret.concat(lsr(o.name, opts))
-                return ret;
+                return ret
             })
-        return Array.prototype.flat ? ret.flat() : flat(ret);
+        return Array.prototype.flat ? ret.flat() : flat(ret)
     }
     catch(e) {
-        console.error(e);
+        console.error(e)
     }        
 }
 
 function isObj(o) {
-    return typeof o == 'object' && !Array.isArray(o) && !(o instanceof RegExp);
+    return typeof o == 'object' && !Array.isArray(o) && !(o instanceof RegExp)
 }
