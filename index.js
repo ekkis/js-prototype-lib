@@ -1,6 +1,15 @@
 const pkg = require('./package.json');
 const VER = semVerToInt(pkg.version);
 
+// Whitelist of allowed constructor lookups (replaces unsafe eval)
+const CONSTRUCTORS = {
+    array: Array,
+    string: String,
+    object: Object,
+    error: Error,
+    number: Number
+};
+
 var self = module.exports = {
     extensions: {
         string: require('./string'),
@@ -59,7 +68,7 @@ var self = module.exports = {
             })
         })
     }
-}
+};
 
 // support functions
 
@@ -67,7 +76,8 @@ function tc(s) {
     return s[0].toUpperCase() + s.substr(1);
 }
 function getObjByName(nm) {
-    return eval(tc(nm));
+    // SECURITY: Use whitelist instead of eval to prevent arbitrary code execution
+    return CONSTRUCTORS[nm];
 }
 function iterate(ls, cb) {
     for (var i = 0; i < ls.length; i++) {
