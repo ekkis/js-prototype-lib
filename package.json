@@ -25,5 +25,8 @@
   "homepage": "https://github.com/ekkis/js-prototype-lib#readme",
   "devDependencies": {
     "mocha": "^10.1.0"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
   }
 }
