@@ -183,6 +183,41 @@ console.log(o) // shows {a: {b: [0]}}
 
 <hr>
 
+#### `.pathify(object, delim = "/")`
+
+This function allows conversion of an object hierarchy (nested objects)
+into an array of paths
+```js
+var o = {
+    a: 1, 
+    b: 'xx', 
+    c: [2,3], 
+    d: {
+        X: {e: 1, f: 2}, 
+        Y: {g: 1, h: 2}
+    }
+}
+var r = o.pathify(o)
+console.log(r)
+```
+would output:
+
+> [
+    'a/1',
+    'b/xx',
+    'c/[2,3]',
+    'd/X/e/1',
+    'd/X/f/2',
+    'd/Y/g/1',
+    'd/Y/h/2'
+]
+
+The function allows a second parameter to produce paths using a different delimiter e.g.
+
+> d.Y.h.2
+
+<hr>
+
 #### `.json()` / `.json(safe)`
 
 Converts the object to a Json string.  If the `safe` switch is used, the method will

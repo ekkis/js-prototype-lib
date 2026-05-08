@@ -107,6 +107,13 @@ module.exports = {
         if (!noclobber || !(k in o)) o[k] = v
         return o[k]
     },
+    pathify(o, delim = '/') {
+        return o.keys().map(k => {
+            return o[k] && o[k].isObj
+                ? this.pathify(o[k], delim).map(p => k + delim + p)
+                : k + delim + JSON.stringify(o[k])
+        }).flat()
+    },
     json(safe = false) {
         if (this instanceof Error) return JSON.stringify(this.obj())
         return safe ? safeJSON(this) : JSON.stringify(this)

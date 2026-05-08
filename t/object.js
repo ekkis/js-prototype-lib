@@ -362,6 +362,32 @@ describe('Objects', () => {
 			assert.deepEqual(res, [], 'Bad return value')
 		})
 	})
+	describe('pathify', () => {
+		it('Base case', () => {
+			var input = {a:1, b:{c:2}}
+			var actual = input.pathify(input)
+			var expected = ['a/1', 'b/c/2']
+			assert.deepEqual(actual, expected)
+		})
+		it('Custom delimiter', () => {
+			var input = {a:1, b:{c:2}}
+			var actual = input.pathify(input, ':')
+			var expected = ['a:1', 'b:c:2']
+			assert.deepEqual(actual, expected)
+		})
+		it('Stringifies non-objects', () => {
+			var input = {a:1, b:{c:2}, d:[1,2,3]}
+			var actual = input.pathify(input)
+			var expected = ['a/1', 'b/c/2', 'd/[1,2,3]']
+			assert.deepEqual(actual, expected)
+		})
+		it('Handles cartesians', () => {
+			var input = {a:1, b:{c: {d:2, e:3}}}
+			var actual = input.pathify(input)
+			var expected = ['a/1', 'b/c/d/2', 'b/c/e/3']
+			assert.deepEqual(actual, expected)
+		})
+	})
 	describe('json', () => {
 		it('Base case', () => {
 			assert.deepEqual({a:"x", b:"y"}.json(), '{"a":"x","b":"y"}')

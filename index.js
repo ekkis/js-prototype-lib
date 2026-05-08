@@ -13,6 +13,7 @@ var self = module.exports = {
     install(...r) {
         const lib = 'js-prototype-lib';
         if (r.length == 0) r = this.groups;
+        this.setIsProperties();
         iterate(this.ls(...r), (o, fn) => {
             if (!o.val.library) o.val.library = lib;
             if (o.val.library != lib || (o.val.ver || 0) > VER) return;
@@ -43,10 +44,10 @@ var self = module.exports = {
         return {SemVer: pkg.version, nbr: VER};
     },
     setIsProperties(...ls) {
-        if (ls.length == 0) ls = this.groups.concat('number');
+        if (ls.length == 0) ls = this.groups.concat('number', 'boolean');
         var prop = {
             number: 'isNbr', string: 'isStr', 
-            array: 'isArr', object: 'isObj'
+            array: 'isArr', object: 'isObj', boolean: 'isBool'
         }
         ls.forEach(nm => {
             if (!prop[nm]) return;
